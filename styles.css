@@ -1,0 +1,174 @@
+:root {
+  --panel: rgba(255, 252, 245, 0.78);
+  --panel-border: rgba(139, 115, 85, 0.25);
+  --text: #3a3228;
+  --btn-bg: #f4e9dc;
+  --btn-border: #c4a882;
+  --btn-shadow: rgba(62, 48, 36, 0.18);
+  /* 中粗宋体：思源宋体（网络）+ 华文中宋 / 系统宋体回退 */
+  --font-song: "Noto Serif SC", "Source Han Serif SC", STZhongsong, STSong, "SimSun",
+    "NSimSun", "Songti SC", "STSongti SC", serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-song);
+  font-weight: 600;
+  color: var(--text);
+  /* 与海报留白一致，加载前不闪深色条 */
+  background: #ffffff;
+}
+
+.page {
+  position: relative;
+  min-height: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  /* 背景图 assets/poster-bg.jpg；cover + center 铺满视口（与原先 poster 相同的布局方式） */
+  background-color: #ffffff;
+  background-image: url("assets/poster-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+      ellipse 120% 90% at 50% 40%,
+      rgba(0, 0, 0, 0) 45%,
+      rgba(0, 0, 0, 0.35) 100%
+    ),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.12), transparent 28%, transparent 72%, rgba(0, 0, 0, 0.2));
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 100%;
+  min-height: 100dvh;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  padding-bottom: clamp(2rem, 8vh, 4rem);
+  text-align: center;
+}
+
+.hb-btn {
+  margin-left: clamp(0.6rem, 2.2vw, 1.35rem);
+  appearance: none;
+  cursor: pointer;
+  font-family: var(--font-song);
+  font-weight: 600;
+  font-size: clamp(1rem, 3.2vw, 1.2rem);
+  font-style: normal;
+  letter-spacing: 0.08em;
+  padding: 0.85rem 1.75rem;
+  border-radius: 999px;
+  border: 2px solid var(--btn-border);
+  background: linear-gradient(180deg, #fff9f0, var(--btn-bg));
+  color: #3d2f24;
+  box-shadow: 0 6px 18px var(--btn-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.hb-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px var(--btn-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.hb-btn:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
+
+.hb-btn:focus-visible {
+  outline: 3px solid #c49a6c;
+  outline-offset: 3px;
+}
+
+.counter {
+  margin: 1.15rem 0 0 clamp(0.6rem, 2.2vw, 1.35rem);
+  font-size: clamp(0.95rem, 2.8vw, 1.1rem);
+  font-weight: 600;
+  line-height: 1.6;
+  padding: 0.55rem 1.1rem;
+  border-radius: 12px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  max-width: min(92vw, 26rem);
+}
+
+.counter-num {
+  display: inline-block;
+  min-width: 2ch;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: #6b4e38;
+}
+
+.balloon-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.balloon {
+  position: absolute;
+  bottom: -20%;
+  width: clamp(60px, 16vw, 110px);
+  height: auto;
+  will-change: transform, opacity;
+  opacity: 0;
+  animation: rise 9s ease-in forwards;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.18));
+}
+
+@keyframes rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.92);
+  }
+  8% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.95;
+    transform: translate3d(var(--drift), -120vh, 0) scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .balloon {
+    animation-duration: 6s;
+    animation-timing-function: linear;
+  }
+
+  .hb-btn {
+    transition: none;
+  }
+}
